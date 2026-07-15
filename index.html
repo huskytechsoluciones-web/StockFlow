@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockFlow - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="lang-selector-top">
+            <button id="lang-es-btn" class="lang-btn active">ES</button>
+            <button id="lang-en-btn" class="lang-btn">EN</button>
+        </div>
+        <div class="login-card">
+            <div class="logo-container">
+                <div class="logo-box">
+                    <img src="https://i.imgur.com/XXTrfzQ.png" alt="Logo" class="system-logo">
+                </div>
+                <h1 id="txt-title">StockFlow</h1>
+                <p class="subtitle" id="txt-subtitle">Sistema de Gestión de Stock y Ventas</p>
+            </div>
+            <form class="login-form" id="form-login">
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">person</span>
+                    <input type="text" id="cedula" placeholder="Cédula" required>
+                </div>
+                <div class="input-group">
+                    <span class="material-symbols-outlined input-icon">lock</span>
+                    <input type="password" id="contrasena" placeholder="Contraseña" required>
+                    <span class="material-symbols-outlined toggle-password" id="btn-toggle-pass">visibility</span>
+                </div>
+                <div id="error-message" class="error-msg-box"></div>
+                <button type="submit" class="btn-submit">
+                    <span class="material-symbols-outlined">login</span>
+                    <span id="txt-btn-login">Iniciar sesión</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>

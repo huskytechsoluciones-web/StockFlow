@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockFlow - Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <div id="toast-container" class="toast-wrapper"></div>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-brand">
+                    <img src="https://i.imgur.com/XXTrfzQ.png" alt="Logo" class="menu-logo">
+                    <span>StockFlow</span>
+                </div>
+                <div class="user-badge">
+                    <span class="material-symbols-outlined">account_circle</span>
+                    <div class="user-info">
+                        <p id="user-cedula">Cédula: ---</p>
+                        <span id="user-role">...</span>
+                    </div>
+                </div>
+                <nav class="sidebar-menu">
+                    <a href="#" id="menu-inv-btn" class="active"><span class="material-symbols-outlined">inventory_2</span> <span id="lbl-m-inv">Inventario</span></a>
+                    <a href="#" id="menu-vta-btn"><span class="material-symbols-outlined">sell</span> <span id="lbl-m-vta">Ventas</span></a>
+                    <a href="#" id="menu-gto-btn"><span class="material-symbols-outlined">payments</span> <span id="lbl-m-gto">Gastos</span></a>
+                </nav>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="lang-switch-box">
+                    <button id="dash-es-btn">ES</button>
+                    <button id="dash-en-btn">EN</button>
+                </div>
+                <a href="#" id="btn-logout" class="logout-link"><span class="material-symbols-outlined">logout</span> <span id="lbl-m-out">Cerrar Sesión</span></a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h2 id="dash-module-title">Gestión de Inventario</h2>
+                <div class="company-badge">BT Informática 2026 | Polo Educativo Tecnológico</div>
+            </header>
+
+            <section class="cards-grid">
+                <div class="card">
+                    <span class="card-title" id="lbl-card-ing">Ingresos Totales</span>
+                    <div class="card-value green" id="stat-ingresos">$0.00</div>
+                </div>
+                <div class="card">
+                    <span class="card-title" id="lbl-card-gto">Gastos Totales</span>
+                    <div class="card-value" id="stat-gastos">$0.00</div>
+                </div>
+                <div class="card">
+                    <span class="card-title" id="lbl-card-prod">Total Productos</span>
+                    <div class="card-value" id="stat-total-productos">0</div>
+                </div>
+                <div class="card">
+                    <span class="card-title" id="lbl-card-low">Stock Crítico</span>
+                    <div class="card-value red" id="stat-stock-bajo">0</div>
+                </div>
+            </section>
+
+            <div id="section-inventario" class="module-section">
+                <div class="inventory-layout">
+                    <div class="inventory-card form-card" id="box-reg-prod">
+                        <h3 id="lbl-title-pform">Registrar Producto</h3>
+                        <form id="form-producto">
+                            <div class="input-group">
+                                <label id="lbl-f-cod">Código Único</label>
+                                <input type="text" id="prod-codigo" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-nom">Nombre</label>
+                                <input type="text" id="prod-nombre" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-cos">Precio Costo</label>
+                                <input type="number" id="prod-costo" step="0.01" min="0" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-vta">Precio Venta</label>
+                                <input type="number" id="prod-venta" step="0.01" min="0" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-med">Unidad de Medida</label>
+                                <input type="text" id="prod-medida" value="unidades" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-cant">Cantidad Inicial</label>
+                                <input type="number" id="prod-cantidad" min="0" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-f-min">Stock Mínimo</label>
+                                <input type="number" id="prod-minimo" value="5" min="1" required>
+                            </div>
+                            <button type="submit" class="btn-save">
+                                <span class="material-symbols-outlined">save</span> <span id="lbl-f-btn">Guardar Producto</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="inventory-card table-card">
+                        <h3 id="lbl-title-ptable">Productos en Existencia</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th id="th-p-cod">Código</th>
+                                        <th id="th-p-nom">Nombre</th>
+                                        <th id="th-p-cant">Stock</th>
+                                        <th id="th-p-cos">Costo</th>
+                                        <th id="th-p-vta">Venta</th>
+                                        <th id="th-p-est">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-productos-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-ventas" class="module-section" style="display:none;">
+                <div class="inventory-layout">
+                    <div class="inventory-card form-card">
+                        <h3 id="lbl-title-vform">Nueva Transacción</h3>
+                        <form id="form-venta">
+                            <div class="input-group">
+                                <label id="lbl-v-canal">Canal de Venta</label>
+                                <input type="text" id="venta-canal" placeholder="E-commerce, Local, Instagram" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-v-prod">Seleccionar Producto</label>
+                                <select id="venta-producto-select"></select>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-v-cant">Cantidad</label>
+                                <input type="number" id="venta-cantidad" min="1" value="1" required>
+                            </div>
+                            <button type="button" id="btn-add-item" class="btn-save btn-secondary">
+                                <span class="material-symbols-outlined">add</span> <span id="lbl-v-add">Añadir Ítem</span>
+                            </button>
+                            <div class="cart-summary">
+                                <h4>Total: <span id="cart-total-value">$0.00</span></h4>
+                            </div>
+                            <button type="submit" class="btn-save">
+                                <span class="material-symbols-outlined">shopping_cart</span> <span id="lbl-v-btn">Procesar Venta</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="inventory-card table-card">
+                        <h3 id="lbl-title-vtable">Ítems de la Venta Actual</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th id="th-v-nom">Producto</th>
+                                        <th id="th-v-cant">Cantidad</th>
+                                        <th id="th-v-pre">Precio Unitario</th>
+                                        <th id="th-v-sub">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-cart-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-gastos" class="module-section" style="display:none;">
+                <div class="inventory-layout">
+                    <div class="inventory-card form-card" id="box-reg-gasto">
+                        <h3 id="lbl-title-gform">Registrar Gasto</h3>
+                        <form id="form-gasto">
+                            <div class="input-group">
+                                <label id="lbl-g-cat">Categoría de Gasto</label>
+                                <select id="gasto-categoria-select">
+                                    <option value="1">Logística</option>
+                                    <option value="2">Publicidad</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-g-des">Descripción</label>
+                                <input type="text" id="gasto-descripcion" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-g-mon">Monto ($)</label>
+                                <input type="number" id="gasto-monto" step="0.01" min="0" required>
+                            </div>
+                            <div class="input-group">
+                                <label id="lbl-g-fec">Fecha</label>
+                                <input type="date" id="gasto-fecha" required>
+                            </div>
+                            <button type="submit" class="btn-save">
+                                <span class="material-symbols-outlined">save</span> <span id="lbl-g-btn">Guardar Gasto</span>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="inventory-card table-card">
+                        <h3 id="lbl-title-gtable">Historial de Costos</h3>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th id="th-g-fec">Fecha</th>
+                                        <th id="th-g-cat">Categoría</th>
+                                        <th id="th-g-des">Descripción</th>
+                                        <th id="th-g-mon">Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-gastos-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
